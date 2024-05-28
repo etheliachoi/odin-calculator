@@ -11,14 +11,17 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b === 0) {return ":)"}
     return a / b;
 }
 
 function operate(operator, a, b) {
-    if (operator == "+") return add(a, b);
-    else if (operator == "-") return subtract(a, b);
-    else if (operator == "x") return multiply(a, b);
-    else if (operator == "÷") return divide(a, b);
+    let result;
+    if (operator == "+") result = add(a, b);
+    else if (operator == "-") result = subtract(a, b);
+    else if (operator == "x") result = multiply(a, b);
+    else if (operator == "÷") result = divide(a, b);
+    return parseFloat(result.toFixed(5));
 }
 
 let firstNum = null;
@@ -35,14 +38,27 @@ function clickDigit(btn) {
     // operator is null
     digitBtns.forEach(function(btn) {
         btn.addEventListener("click", () => {
-            displayElem.textContent += btn.textContent;
-            if (!operator) {
-                if (!firstNum) firstNum = btn.textContent;
-                else firstNum += btn.textContent;
+            if (displayElem.textContent === "0") {
+                displayElem.textContent = btn.textContent;
             } else {
-                if (!secondNum) secondNum = btn.textContent;
-                else {
+                displayElem.textContent += btn.textContent;
+            }
+
+            if (!operator) {
+                if (!firstNum) {
+                    firstNum = btn.textContent;
+                    resultElem.textContent = btn.textContent;
+                } else {
+                    firstNum += btn.textContent;
+                    resultElem.textContent += btn.textContent;
+                }
+            } else {
+                if (!secondNum) {
+                    secondNum = btn.textContent;
+                    resultElem.textContent = btn.textContent;
+                } else {
                     secondNum += btn.textContent;
+                    resultElem.textContent += btn.textContent;
                 }
             }
         });
@@ -52,41 +68,36 @@ function clickDigit(btn) {
 function clickOperator(btn) {
     opBtns.forEach(function(btn) {
         btn.addEventListener("click", () => {
+            if (firstNum && secondNum) {
+                getResult();
+            }
             displayElem.textContent += btn.textContent;
             operator = btn.textContent;
-            disableOps();
         })
     })
 }
 
-function disableOps() {
-    opBtns.forEach((btn) => btn.disabled = true);
+function getResult() {
+    let result = operate(operator, parseInt(firstNum), parseInt(secondNum));
+    resultElem.textContent = result;
+    firstNum = result, secondNum = null;
 }
 
-function enableOps() {
-    opBtns.forEach((btn) => btn.disabled = false);
+function clickEqual() {
+    eqBtn.addEventListener("click", () => {
+        getResult();
+    })
+}
+
+function clickClear() {
+    clrBtn.addEventListener("click", () => {
+        firstNum = null, secondNum = null, operator = null;
+        displayElem.textContent = "0";
+        resultElem.textContent = "0";
+    })
 }
 
 clickDigit();
 clickOperator();
 clickEqual();
 clickClear();
-
-function clickEqual() {
-    eqBtn.addEventListener("click", () => {
-        let resultInt = operate(operator, parseInt(firstNum), parseInt(secondNum));
-        resultElem.textContent = resultInt.toString();
-        // firstNum, secondNum = resultInt, null;
-        enableOps();
-    })
-}
-
-function clickClear() {
-    clrBtn.addEventListener("click", () => {
-        firstNum = null;
-        secondNum = null;
-        operator = null;
-        displayElem.textContent = null;
-        enableOps();
-    })
-}
