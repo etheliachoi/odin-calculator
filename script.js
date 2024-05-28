@@ -35,6 +35,7 @@ const eqBtn = document.querySelector(".equal");
 const clrBtn = document.querySelector(".clear");
 const decBtn = document.querySelector(".dot");
 const pctBtn = document.querySelector(".percent");
+const pmBtn = document.querySelector(".pm");
 
 function clickDigit(btn) {
     // operator is null
@@ -104,10 +105,28 @@ function clickPercentage() {
     pctBtn.addEventListener("click", () => {
         existing = parseFloat(resultElem.textContent);
         if (Number.isInteger(existing)) {
-            num = existing / 100
+            let num = existing / 100
             resultElem.textContent = num.toString();
             if (!operator) firstNum = num;
             else secondNum = num;
+        }
+    })
+}
+
+function clickPlusMinus() {
+    pmBtn.addEventListener("click", () => {
+        let curr = resultElem.textContent
+        if (curr === "0") {return}
+        if (curr.includes("-")) {
+            let positive = curr.replace("-", "");
+            resultElem.textContent = positive;
+            if (!operator) firstNum = positive;
+            else secondNum = positive;
+        } else {
+            let negative =  "-" + curr
+            resultElem.textContent = negative;
+            if (!operator) firstNum = negative;
+            else secondNum = negative;
         }
     })
 }
@@ -117,3 +136,4 @@ clickOperator();
 clickEqual();
 clickClear();
 clickPercentage();
+clickPlusMinus();
