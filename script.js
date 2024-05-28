@@ -33,6 +33,8 @@ const digitBtns = document.querySelectorAll(".digit");
 const opBtns = document.querySelectorAll(".operator");
 const eqBtn = document.querySelector(".equal");
 const clrBtn = document.querySelector(".clear");
+const decBtn = document.querySelector(".dot");
+const pctBtn = document.querySelector(".percent");
 
 function clickDigit(btn) {
     // operator is null
@@ -78,7 +80,8 @@ function clickOperator(btn) {
 }
 
 function getResult() {
-    let result = operate(operator, parseInt(firstNum), parseInt(secondNum));
+    let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
+    console.log(result);
     resultElem.textContent = result;
     firstNum = result, secondNum = null;
 }
@@ -97,7 +100,20 @@ function clickClear() {
     })
 }
 
+function clickPercentage() {
+    pctBtn.addEventListener("click", () => {
+        existing = parseFloat(resultElem.textContent);
+        if (Number.isInteger(existing)) {
+            num = existing / 100
+            resultElem.textContent = num.toString();
+            if (!operator) firstNum = num;
+            else secondNum = num;
+        }
+    })
+}
+
 clickDigit();
 clickOperator();
 clickEqual();
 clickClear();
+clickPercentage();
