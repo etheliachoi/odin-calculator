@@ -85,7 +85,7 @@ function getResult() {
 
 function clickEqual() {
     eqBtn.addEventListener("click", () => {
-        getResult();
+        if (operator && secondNum) getResult();
     })
 }
 
