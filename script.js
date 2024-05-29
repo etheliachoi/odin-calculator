@@ -27,7 +27,6 @@ function operate(operator, a, b) {
 let firstNum = null;
 let secondNum = null;
 let operator = null;
-const displayElem = document.querySelector("#display");
 const resultElem = document.querySelector("#result");
 const digitBtns = document.querySelectorAll(".digit");
 const opBtns = document.querySelectorAll(".operator");
@@ -73,7 +72,6 @@ function clickOperator(btn) {
             if (firstNum && secondNum) {
                 getResult();
             }
-            displayElem.textContent += btn.textContent;
             operator = btn.textContent;
             decBtn.disabled = false;
         })
@@ -97,7 +95,6 @@ function clickEqual() {
 function clickClear() {
     clrBtn.addEventListener("click", () => {
         firstNum = null, secondNum = null, operator = null;
-        displayElem.textContent = "0";
         resultElem.textContent = "0";
         decBtn.disabled = false;
     })
