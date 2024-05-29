@@ -65,7 +65,7 @@ function clickDigit(btn) {
             }
         });
     })
-    // clickDecimal();
+    clickDecimal();
 }
 
 function clickOperator(btn) {
@@ -134,12 +134,12 @@ function clickPlusMinus() {
 }
 
 function clickDecimal() {
-    // if (firstNum || secondNum) {
         decBtn.addEventListener("click", () => {
             if (!operator) {
-                if (!firstNum) {
+                if (!firstNum || lastClickEqual) {
                     firstNum = "0.";
                     resultElem.textContent = "0."
+                    lastClickEqual = false;
                 } else {
                     firstNum += ".";
                     resultElem.textContent += "."
@@ -154,7 +154,6 @@ function clickDecimal() {
             decBtn.disabled = true;
         })
     }
-// }
 
 clickDigit();
 clickOperator();
@@ -162,4 +161,4 @@ clickEqual();
 clickClear();
 clickPercentage();
 clickPlusMinus();
-clickDecimal();
+// clickDecimal();
