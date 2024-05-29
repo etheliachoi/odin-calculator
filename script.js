@@ -106,13 +106,11 @@ function clickClear() {
 function clickPercentage() {
     pctBtn.addEventListener("click", () => {
         existing = parseFloat(resultElem.textContent);
-        if (Number.isInteger(existing)) {
-            let num = existing / 100
-            resultElem.textContent = num.toString();
-            if (!operator) firstNum = num;
-            else secondNum = num;
-        }
-    })
+        let num = existing / 100
+        resultElem.textContent = num.toString();
+        if (!operator) firstNum = num;
+        else secondNum = num;
+        })
 }
 
 function clickPlusMinus() {
