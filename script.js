@@ -138,6 +138,9 @@ function clickDecimal() {
         decBtn.addEventListener("click", () => {
             if (!operator) {
                 if (!firstNum) {
+                    firstNum = "0.";
+                    resultElem.textContent = "0."
+                } else {
                     firstNum += ".";
                     resultElem.textContent += "."
                 }
