@@ -27,6 +27,7 @@ function operate(operator, a, b) {
 let firstNum = null;
 let secondNum = null;
 let operator = null;
+let lastClickEqual = false;
 const resultElem = document.querySelector("#result");
 const digitBtns = document.querySelectorAll(".digit");
 const opBtns = document.querySelectorAll(".operator");
@@ -45,9 +46,10 @@ function clickDigit(btn) {
             }
 
             if (!operator) {
-                if (!firstNum || resultElem.textContent === "0") {
+                if (!firstNum || resultElem.textContent === "0" || lastClickEqual) {
                     firstNum = btn.textContent;
                     resultElem.textContent = btn.textContent;
+                    lastClickEqual = false;
                 } else {
                     firstNum += btn.textContent;
                     resultElem.textContent += btn.textContent;
@@ -82,12 +84,13 @@ function getResult() {
     let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
     console.log(result);
     resultElem.textContent = result;
-    firstNum = result, secondNum = null;
+    firstNum = result, secondNum = null, operator = null;
 }
 
 function clickEqual() {
     eqBtn.addEventListener("click", () => {
         if (operator && secondNum) getResult();
+        lastClickEqual = true;
         decBtn.disabled = false;
     })
 }
@@ -130,25 +133,25 @@ function clickPlusMinus() {
     })
 }
 
-// function clickDecimal() {
-//     // if (firstNum || secondNum) {
-//         decBtn.addEventListener("click", () => {
-//             if (!operator) {
-//                 if (!firstNum) {
-//                     firstNum += ".";
-//                     resultElem.textContent += "."
-//                 }
-//             } else if (!secondNum) {
-//                 secondNum = "0.";
-//                 resultElem.textContent = "0.";
-//             } else {
-//                 secondNum += ".";
-//                 resultElem.textContent += ".";
-//             }
-//             decBtn.disabled = true;
-//         })
-//     }
-// // }
+function clickDecimal() {
+    // if (firstNum || secondNum) {
+        decBtn.addEventListener("click", () => {
+            if (!operator) {
+                if (!firstNum) {
+                    firstNum += ".";
+                    resultElem.textContent += "."
+                }
+            } else if (!secondNum) {
+                secondNum = "0.";
+                resultElem.textContent = "0.";
+            } else {
+                secondNum += ".";
+                resultElem.textContent += ".";
+            }
+            decBtn.disabled = true;
+        })
+    }
+// }
 
 clickDigit();
 clickOperator();
@@ -156,4 +159,4 @@ clickEqual();
 clickClear();
 clickPercentage();
 clickPlusMinus();
-// clickDecimal();
+clickDecimal();
