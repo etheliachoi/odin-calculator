@@ -11,7 +11,6 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    console.log(typeof b)
     if (b === 0) {return ":)"}
     return a / b;
 }
@@ -69,7 +68,6 @@ function updateDigit(btnTrue, btn) {
 }
 
 digitBtns.forEach(function(btn) {
-    console.log("n")
     btn.addEventListener("click", () => updateDigit(true, btn))
 })
 
@@ -166,7 +164,6 @@ const pctKey = "%";
 
 
 function addKeyboardSupport(event) {
-    console.log(event.key)
     if (digitKeys.includes(event.key)) updateDigit(false, event.key);
         else if (event.key === eqKey) clickEqual();
         else if (event.key === clrKey) clickClear();
