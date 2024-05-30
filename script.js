@@ -19,8 +19,8 @@ function operate(operator, a, b) {
     let result;
     if (operator == "+") result = add(a, b);
     else if (operator == "-") result = subtract(a, b);
-    else if (operator == "x") result = multiply(a, b);
-    else if (operator == "÷") result = divide(a, b);
+    else if (operator == "*") result = multiply(a, b);
+    else if (operator == "/") result = divide(a, b);
     return parseFloat(result.toFixed(5));
 }
 
@@ -66,118 +66,110 @@ function updateDigit(btnTrue, btn) {
     }
 }
 
-function clickDigit() {
-    digitBtns.forEach(function(btn) {
-        console.log("n")
-        btn.addEventListener("click", () => updateDigit(true, btn))
-    })
-    clickDecimal();
-}
+digitBtns.forEach(function(btn) {
+    console.log("n")
+    btn.addEventListener("click", () => updateDigit(true, btn))
+})
+
 
 function clickOperator(btn) {
-    opBtns.forEach(function(btn) {
-        btn.addEventListener("click", () => {
-            if (firstNum && secondNum) {
-                getResult();
-            }
-            operator = btn.textContent;
-            decBtn.disabled = false;
-        })
-    })
+    if (firstNum && secondNum) {
+        getResult();
+    }
+    operator = btn.textContent;
+    decBtn.disabled = false;
 }
+opBtns.forEach(function(btn) {
+    btn.addEventListener("click", () => clickOperator(btn));
+})
 
 function getResult() {
     let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
-    console.log(result);
     resultElem.textContent = result;
     firstNum = result, secondNum = null, operator = null;
 }
 
 function clickEqual() {
-    eqBtn.addEventListener("click", () => {
-        if (operator && secondNum) getResult();
+    if (operator && secondNum) getResult();
         lastClickEqual = true;
         decBtn.disabled = false;
-    })
 }
+eqBtn.addEventListener("click", () => clickEqual());
+
+
 
 function clickClear() {
-    clrBtn.addEventListener("click", () => {
-        firstNum = null, secondNum = null, operator = null;
-        resultElem.textContent = "0";
-        decBtn.disabled = false;
-    })
+    firstNum = null, secondNum = null, operator = null;
+    resultElem.textContent = "0";
+    decBtn.disabled = false;
 }
+clrBtn.addEventListener("click", () => clickClear());
+
 
 function clickPercentage() {
-    pctBtn.addEventListener("click", () => {
-        existing = parseFloat(resultElem.textContent);
-        let num = existing / 100
-        resultElem.textContent = num.toString();
-        if (!operator) firstNum = num;
-        else secondNum = num;
-        })
+    existing = parseFloat(resultElem.textContent);
+    let num = existing / 100
+    resultElem.textContent = num.toString();
+    if (!operator) firstNum = num;
+    else secondNum = num;
 }
+pctBtn.addEventListener("click", () => clickPercentage());
+
 
 function clickPlusMinus() {
-    pmBtn.addEventListener("click", () => {
-        let curr = resultElem.textContent
-        if (curr === "0") {return}
-        if (curr.includes("-")) {
-            let positive = curr.replace("-", "");
-            resultElem.textContent = positive;
-            if (!operator) firstNum = positive;
-            else secondNum = positive;
-        } else {
-            let negative =  "-" + curr
-            resultElem.textContent = negative;
-            if (!operator) firstNum = negative;
-            else secondNum = negative;
-        }
-    })
+    let curr = resultElem.textContent
+    if (curr === "0") {return}
+    if (curr.includes("-")) {
+        let positive = curr.replace("-", "");
+        resultElem.textContent = positive;
+        if (!operator) firstNum = positive;
+        else secondNum = positive;
+    } else {
+        let negative =  "-" + curr
+        resultElem.textContent = negative;
+        if (!operator) firstNum = negative;
+        else secondNum = negative;
+    }
 }
+pmBtn.addEventListener("click", () => clickPlusMinus());
+
 
 function clickDecimal() {
-        decBtn.addEventListener("click", () => {
-            if (!operator) {
-                if (!firstNum || lastClickEqual) {
-                    firstNum = "0.";
-                    resultElem.textContent = "0."
-                    lastClickEqual = false;
-                } else {
-                    firstNum += ".";
-                    resultElem.textContent += "."
-                }
-            } else if (!secondNum) {
-                secondNum = "0.";
-                resultElem.textContent = "0.";
-            } else {
-                secondNum += ".";
-                resultElem.textContent += ".";
-            }
-            decBtn.disabled = true;
-        })
+    if (!operator) {
+        if (!firstNum || lastClickEqual) {
+            firstNum = "0.";
+            resultElem.textContent = "0."
+            lastClickEqual = false;
+        } else {
+            firstNum += ".";
+            resultElem.textContent += "."
+        }
+    } else if (!secondNum) {
+        secondNum = "0.";
+        resultElem.textContent = "0.";
+    } else {
+        secondNum += ".";
+        resultElem.textContent += ".";
     }
+    decBtn.disabled = true;
+}
+decBtn.addEventListener("click", () => clickDecimal());
 
 
 const digitKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-const otherKeys = ["Shift", "+", "-", "x", "/", "=", "Enter", "c", "."]
+const opKeys= ["+", "*", "-", "/"]
+const eqKey = "="
+const clrKey = "c"
+const pctKey = "%";
 
-function addKeyboardSupport() {
-    document.addEventListener("keydown", (event) => {
-        if (digitKeys.includes(event.key)) {
-            updateDigit(false, event.key);
-        }
-    })
+
+function addKeyboardSupport(event) {
+    console.log(event.key)
+    if (digitKeys.includes(event.key)) updateDigit(false, event.key);
+        else if (event.key === eqKey) clickEqual();
+        else if (event.key === clrKey) clickClear();
+        else if (event.key === pctKey && event.shiftKey === true) clickPercentage();
+        else if (opKeys.includes(event.key)) clickOperator(event.key);
 }
+document.addEventListener("keydown", (event) => addKeyboardSupport(event));
 
-
-
-clickDigit();
-clickOperator();
-clickEqual();
-clickClear();
-clickPercentage();
-clickPlusMinus();
-// clickDecimal();
-addKeyboardSupport();
