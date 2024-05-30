@@ -37,33 +37,39 @@ const decBtn = document.querySelector(".dot");
 const pctBtn = document.querySelector(".percent");
 const pmBtn = document.querySelector(".pm");
 
-function clickDigit(btn) {
-    // operator is null
-    digitBtns.forEach(function(btn) {
-        btn.addEventListener("click", () => {
-            if (resultElem.textContent === "0" && btn.textContent === "0") {
-                return
-            }
+function updateDigit(btnTrue, btn) {
+    let currDigit;
+    if (btnTrue) currDigit = btn.textContent;
+    else currDigit = btn;
 
-            if (!operator) {
-                if (!firstNum || resultElem.textContent === "0" || lastClickEqual) {
-                    firstNum = btn.textContent;
-                    resultElem.textContent = btn.textContent;
-                    lastClickEqual = false;
-                } else {
-                    firstNum += btn.textContent;
-                    resultElem.textContent += btn.textContent;
-                }
-            } else {
-                if (!secondNum || resultElem.textContent === "0") {
-                    secondNum = btn.textContent;
-                    resultElem.textContent = btn.textContent;
-                } else {
-                    secondNum += btn.textContent;
-                    resultElem.textContent += btn.textContent;
-                }
-            }
-        });
+    if (resultElem.textContent === "0" && currDigit === "0") {
+        return
+    }
+
+    if (!operator) {
+        if (!firstNum || resultElem.textContent === "0" || lastClickEqual) {
+            firstNum = currDigit;
+            resultElem.textContent = currDigit;
+            lastClickEqual = false;
+        } else {
+            firstNum += currDigit;
+            resultElem.textContent += currDigit;
+        }
+    } else {
+        if (!secondNum || resultElem.textContent === "0") {
+            secondNum = currDigit;
+            resultElem.textContent = currDigit;
+        } else {
+            secondNum += currDigit;
+            resultElem.textContent += currDigit;
+        }
+    }
+}
+
+function clickDigit() {
+    digitBtns.forEach(function(btn) {
+        console.log("n")
+        btn.addEventListener("click", () => updateDigit(true, btn))
     })
     clickDecimal();
 }
@@ -153,6 +159,20 @@ function clickDecimal() {
         })
     }
 
+
+const digitKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+const otherKeys = ["Shift", "+", "-", "x", "/", "=", "Enter", "c", "."]
+
+function addKeyboardSupport() {
+    document.addEventListener("keydown", (event) => {
+        if (digitKeys.includes(event.key)) {
+            updateDigit(false, event.key);
+        }
+    })
+}
+
+
+
 clickDigit();
 clickOperator();
 clickEqual();
@@ -160,3 +180,4 @@ clickClear();
 clickPercentage();
 clickPlusMinus();
 // clickDecimal();
+addKeyboardSupport();
