@@ -11,6 +11,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    console.log(typeof b)
     if (b === 0) {return ":)"}
     return a / b;
 }
@@ -21,6 +22,7 @@ function operate(operator, a, b) {
     else if (operator == "-") result = subtract(a, b);
     else if (operator == "*") result = multiply(a, b);
     else if (operator == "/") result = divide(a, b);
+    if (result == ":)") return result;
     return parseFloat(result.toFixed(5));
 }
 
@@ -72,15 +74,15 @@ digitBtns.forEach(function(btn) {
 })
 
 
-function clickOperator(btn) {
+function clickOperator(currOp) {
     if (firstNum && secondNum) {
         getResult();
     }
-    operator = btn.textContent;
+    operator = currOp;
     decBtn.disabled = false;
 }
 opBtns.forEach(function(btn) {
-    btn.addEventListener("click", () => clickOperator(btn));
+    btn.addEventListener("click", () => clickOperator(btn.textContent));
 })
 
 function getResult() {
