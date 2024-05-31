@@ -27,7 +27,6 @@
 
 .display-container {
     display: flex;
-    border: white solid 2px;
     width: 100%;
     justify-content: flex-end;
     padding-right: 24px;
@@ -41,23 +40,18 @@ p {
     color: white;
     font-size: 4em;
     font-family: Helvetica, sans-serif, Arial;
-    font-weight: 200;
     max-width: 30vw;
 }
 
 .button-container {
     display: flex;
     flex-direction: column;
-    /* border: pink solid 2px; */
 }
 
 .first-row, .second-row, .third-row, .fourth-row, .fifth-row {
     display: flex;
-    /* border: blue solid 2px; */
     justify-content: space-between;
     gap: 10px;
-    /* text-align: center; */
-    /* line-height: 1em; */
     padding: 6px 15px;
 }
 
@@ -87,4 +81,11 @@ button {
 
 button:hover {
     cursor: pointer;
+}
+
+.digit.zero {
+    width: 130px;
+    border-radius: 30px;
+    text-align: left;
+    padding-left: 20px;
 }
